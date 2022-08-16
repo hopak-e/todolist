@@ -49,7 +49,7 @@ const List = () => {
 
   const onSumbitHandler = (e) => {
     e.preventDefault();
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && value) {
       dispatch({
         type: "CREATE",
         payload: { value },
@@ -59,23 +59,25 @@ const List = () => {
   };
 
   return (
-    <>
+    <Container>
       <h1>Todolist</h1>
       <p>오늘의 할일 : {todolist.count}</p>
-      <Input
-        type="text"
-        value={value}
-        onChange={onChangeHandler}
-        onKeyUp={onSumbitHandler}
-      />
-      <Submit
-        onClick={() => {
-          dispatch({ type: "CREATE", payload: { value } });
-          setValue("");
-        }}
-      >
-        등록
-      </Submit>
+      <Create>
+        <input
+          type="text"
+          value={value}
+          onChange={onChangeHandler}
+          onKeyUp={onSumbitHandler}
+        />
+        <button
+          onClick={() => {
+            value && dispatch({ type: "CREATE", payload: { value } });
+            setValue("");
+          }}
+        >
+          등록
+        </button>
+      </Create>
       {todolist.Todos.map((el) => {
         return (
           <Delete
@@ -87,11 +89,15 @@ const List = () => {
           />
         );
       })}
-    </>
+    </Container>
   );
 };
-
-const Input = styled.input``;
-const Submit = styled.button``;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+const Create = styled.span``;
 
 export default List;
